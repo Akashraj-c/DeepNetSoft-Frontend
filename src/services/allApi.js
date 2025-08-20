@@ -17,10 +17,18 @@ export const getAllMenuApi = async () => {
     return await CommonApi('GET', `${serverUrl}/getmenu`)
 }
 
-export const addMenuItemApi = async (id,reqBody) => {
+export const addMenuItemApi = async (id, reqBody) => {
     return await CommonApi('POST', `${serverUrl}/additems/${id}`, reqBody)
 }
 
-export const getAllItemsApi=async()=>{
-    return await CommonApi('GET',`${serverUrl}/getallitems`)
+export const getAllItemsApi = async () => {
+    return await CommonApi('GET', `${serverUrl}/getallitems`)
+}
+
+export const deleteItemApi = async (id) => {
+    return await CommonApi('DELETE', `${serverUrl}/deleteitem/${id}`)
+}
+
+export const handleEditApi = async (id, reqBody) => {
+    return await CommonApi('PUT', `${serverUrl}/edititem/${id}`, reqBody)
 }

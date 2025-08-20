@@ -32,7 +32,7 @@ const Footer = () => {
                             <img src="" alt="no" />
                             <div>
                                 <h5><span style={{ color: 'rgba(235, 173, 4, 1)' }}>DEEP</span> <span>NET</span> <span className='text-secondary'>SOFT</span></h5>
-                                <ul className='list-unstyled d-flex'>
+                                <ul className='list-unstyled d-flex align-items-center justify-content-center'>
                                     <li className='text-decoration-none me-3'><FaInstagram /></li>
                                     <li className='text-decoration-none me-3'><FaFacebook /></li>
                                     <li className='text-decoration-none me-3'><FaTwitter /></li>

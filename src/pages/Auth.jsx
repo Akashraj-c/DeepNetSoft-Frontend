@@ -58,7 +58,13 @@ const Auth = ({ register }) => {
             if (result.status == 200) {
                 toast.success('login successfully')
                 setTimeout(() => {
-                    navigate('/')
+                    if (result.data.existingUser.email == 'dns@gmail.com') {
+                        navigate('/adminmenu')
+                    }
+                    else {
+                        navigate('/')
+                    }
+
                 }, 2000)
                 setUserDetails({
                     username: "",

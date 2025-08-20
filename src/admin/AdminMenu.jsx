@@ -8,9 +8,11 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { FaPlusSquare } from "react-icons/fa";
 import { toast, ToastContainer } from 'react-toastify';
-import { addMenuApi, addMenuItemApi, getAllItemsApi, getAllMenuApi } from '../services/allApi';
+import { addMenuApi, addMenuItemApi, deleteItemApi, getAllItemsApi, getAllMenuApi, handleEditApi } from '../services/allApi';
 import { FaPencilAlt } from "react-icons/fa";
 import { FaTrashAlt } from "react-icons/fa";
+import { FaEdit } from "react-icons/fa";
+import { FaPencilRuler } from "react-icons/fa";
 
 const AdminMenu = () => {
     const [menu, setMenu] = useState({
@@ -19,7 +21,7 @@ const AdminMenu = () => {
     });
     const [allMenu, setAllMenu] = useState([]);
     const [menuStatus, setMenuStatus] = useState('');
-
+    const [editItems, setEditItems] = useState(false)
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
@@ -81,10 +83,14 @@ const AdminMenu = () => {
 
     // Get all items
     const GetAllItems = async () => {
-        const result = await getAllItemsApi()
-        console.log(result);
-        if (result.status == 200) {
-            setAllItems(result.data)
+        try {
+            const result = await getAllItemsApi()
+            console.log(result);
+            if (result.status == 200) {
+                setAllItems(result.data)
+            }
+        } catch (error) {
+            toast.error('server error')
         }
     }
 
@@ -129,7 +135,25 @@ const AdminMenu = () => {
         }
     };
 
+    // Delete items
+    const handleDeleteItem = async (id) => {
+        console.log(id);
+
+        const result = await deleteItemApi(id)
+        console.log(result);
+        if (result.status == 200) {
+            toast.success('deleted successfuly')
+            setMenuStatus(result.data)
+        }
+    }
+
+    // Edit
+    const handleEditItem = async (id) => {
+        
+    }
+
     useEffect(() => {
+        
         GetAllMenus();
         GetAllItems()
     }, [menuStatus]);
@@ -163,7 +187,15 @@ const AdminMenu = () => {
                                     {allMenu.map((menu, index) => (
                                         <Tab.Pane key={index} eventKey={menu?.name} className='w-100'>
                                             <div className="text-center my-3 mb-5">
-                                                <h3 className="fw-bold text-warning">{menu?.name}</h3>
+                                                <div className='d-flex justify-content-between align-items-center'>
+                                                    <h1></h1>
+                                                    <h3 className="fw-bold text-warning" style={{ marginLeft: '60px' }}>{menu?.name}</h3>
+                                                    {
+                                                        !editItems ? <button className='btn ' onClick={() => setEditItems(!editItems)}><FaEdit className='text-success fs-5 ' /></button>
+                                                            :
+                                                            <button className='btn ' onClick={() => setEditItems(!editItems)}><FaPencilRuler className='fs-5 text-danger' /></button>
+                                                    }
+                                                </div>
                                                 <p style={{ color: 'rgba(175, 181, 181, 1)' }}>{menu?.description}</p>
                                             </div>
 
@@ -174,15 +206,17 @@ const AdminMenu = () => {
                                                             .filter(itm => itm.menuId == menu._id)
                                                             .map((itm, index) => (
                                                                 <div key={index} className="col-md-6 mb-4">
-                                                                    <div className='border rounded p-2 border-danger'>
-                                                                        <div className='d-flex justify-content-end'>
-                                                                            <button className='border btn'> <FaPencilAlt className='text-success' /></button>
-                                                                        </div>
+                                                                    <div className={editItems ? 'border rounded p-2 border-danger' : ''}>
+                                                                        {editItems && <div className='d-flex justify-content-end'>
+                                                                            <button className='border btn' onClick={() => handleEditItem(itm?._id)}> <FaPencilAlt className='text-success' /></button>
+                                                                        </div>}
+
                                                                         <h5>{itm.name}........................... ${itm.price}</h5>
                                                                         <p className="text-white">{itm.description}</p>
-                                                                        <div className='d-flex justify-content-end'>
-                                                                            <button className='border btn'> <FaTrashAlt className='text-danger'/></button>
-                                                                        </div>
+
+                                                                        {editItems && <div className='d-flex justify-content-end'>
+                                                                            <button className='border btn' onClick={() => handleDeleteItem(itm?._id)}> <FaTrashAlt className='text-danger' /></button>
+                                                                        </div>}
                                                                     </div>
                                                                 </div>
                                                             ))
@@ -194,7 +228,10 @@ const AdminMenu = () => {
 
 
                                             <div className="w-100 d-flex justify-content-center mb-5">
-                                                <button className="btn btn-success" onClick={() => handleItemShow(menu._id)}> Add Items</button>
+                                                {editItems ? <button disabled className="btn btn-success" onClick={() => handleItemShow(menu._id)}> Add Items</button>
+                                                    :
+                                                    <button className="btn btn-success" onClick={() => handleItemShow(menu._id)}> Add Items</button>
+                                                }
                                             </div>
                                         </Tab.Pane>
                                     ))}
@@ -236,26 +273,11 @@ const AdminMenu = () => {
                     <Modal.Title>Add Item</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <input
-                        type="text"
-                        value={item.name}
-                        onChange={(e) => setItem({ ...item, name: e.target.value })}
-                        placeholder="Item Name"
-                        className="form-control text-black mb-3"
-                    />
-                    <textarea
-                        value={item.description}
-                        onChange={(e) => setItem({ ...item, description: e.target.value })}
-                        placeholder="Description"
-                        className="form-control mb-3"
-                    />
-                    <input
-                        type="number"
-                        value={item.price}
-                        onChange={(e) => setItem({ ...item, price: e.target.value })}
-                        placeholder="Price"
-                        className="form-control text-black"
-                    />
+                    <input type="text" value={item.name} onChange={(e) => setItem({ ...item, name: e.target.value })} placeholder="Item Name" className="form-control text-black mb-3" />
+
+                    <textarea value={item.description} onChange={(e) => setItem({ ...item, description: e.target.value })} placeholder="Description" className="form-control mb-3" />
+
+                    <input type="number" value={item.price} onChange={(e) => setItem({ ...item, price: e.target.value })} placeholder="Price" className="form-control text-black" />
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleItemClose}>
