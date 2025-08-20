@@ -1,0 +1,31 @@
+*{
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+   font-family: "Playfair", serif;
+}
+
+.Menu {
+  background-image:linear-gradient(rgba(0,0,0,0.6)), url('https://ambrosia-hf.com/wp-content/uploads/2021/10/ambrosia-hf-private-services-dubai.jpeg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: top;
+}
+
+.main {
+  background-image:linear-gradient(rgba(0,0,0,0.5)), url('https://img4.thuthuatphanmem.vn/uploads/2020/08/28/background-menu-mau-den_090706553.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 100%;
+  height: 100%;
+}
+
+.menuBg{
+    background-image:linear-gradient(rgba(0,0,0,0.76)), url('https://thumbs.dreamstime.com/b/seamless-pattern-ingredients-pizza-black-background-contour-pizza-menu-packaging-advertisements-menu-vector-152347391.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: top;
+  width: 100%;
+}
+
