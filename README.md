@@ -1,12 +1,53 @@
-# React + Vite
+# Tech Stack :-
+# Frontend
+- React.js
+- React Router
+- React Bootstrap
+- React Toastify
+- React icons
+- Axios
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+# Backend
+- Node.js
+- Express.js
+- MongoDB with Mongoose
+- JWT
 
-Currently, two official plugins are available:
+# Admin Setup
+- The Admin user is inserted manually in MongoDB
+* Login Details :-
+  -------------------------
+    Email: dns@gmail.com
+    Password: dns123
+  -------------------------
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+# Admin Functionality
+- Menu Management:-
+    - Add new menus
+    - View all menus
 
-## Expanding the ESLint configuration
+- Item Management:-
+    - Add new items under a specific menu
+    - Edit item details 
+    - Delete items from menus
+    - View all items
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- User Management:-
+    - Admin login with special credentials stored in MongoDB
+    - Restrict menu/item management only to Admin role
+    - Normal users can only view menus & items, but cannot modify
+
+# API Routes 
+* User Routes:-
+- POST /register → Register a new user
+- POST /login → Login and get authentication token
+
+* Menu Routes:-
+- POST /addmenu → Create a new menu (e.g., Drinks, Food, Brunch)
+- GET /getmenu → Fetch all menus along with their items
+
+* Item Routes:-
+- POST /additems/:id → Add a new item to a specific menu (:id = menuId)
+- GET /getallitems → Fetch all items (from all menus)
+- PUT /edititem/:id → Edit/update an item by its ID
+- DELETE /deleteitem/:id → Delete an item by its ID
